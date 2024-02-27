@@ -39,6 +39,7 @@ app.get('/gym', async (req, res) => {
     const dateResponse: any = await axios.get(
       `http://${process.env.DATE_SERVICE_HOSTNAME}:${process.env.DATE_SERVICE_PORT}/date`
     )
+    logger.info("Able to get the date from date service")
     if (dateResponse.data.date === 5 || dateResponse.data.date === 6) {
       res.send({
         status: "success",
