@@ -37,8 +37,7 @@ app.get('/health', (req, res) => {
 app.get('/gym', async (req, res) => {
   try {
     const dateResponse: any = await axios.get(
-      `http://localhost:3000/date`
-      // `http://${process.env.DATE_SERVICE_HOSTNAME}:${process.env.DATE_SERVICE_PORT}/date`
+      `http://${process.env.DATE_SERVICE_HOSTNAME}:${process.env.DATE_SERVICE_PORT}/date`
     )
     if (dateResponse.data.date === 5 || dateResponse.data.date === 6) {
       res.send({
