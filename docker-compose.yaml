@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  date:
+    container_name: date-service
+    build:
+      context: ./services/date
+    networks:
+      - observability
+    ports:
+      - 3000:3000
+
+  gym:
+    container_name: gym-service
+    build:
+      context: ./services/gym
+    networks:
+      - observability
+    environment:
+      DATE_SERVICE_HOSTNAME: date-service
+      DATE_SERVICE_PORT: 3000
+    ports:
+      - 8000:8000
+
+networks:
+  observability:
+    name: observability
