@@ -1,6 +1,8 @@
 FROM python:3.11.8-slim
 WORKDIR /app
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install pipenv
+COPY Pipfile .
+COPY Pipfile.lock .
+RUN pipenv install --deploy
 COPY . .
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3000", "--no-access-log"]
+CMD ["pipenv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3000", "--no-access-log"]
