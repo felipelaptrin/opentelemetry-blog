@@ -13,7 +13,7 @@ app = FastAPI()
 
 # Routes
 @app.get("/health")
-def read_root():
+def healthcheck():
     logger.info("Checking status of application...")
     return {
         "App Name": "Date Service",
