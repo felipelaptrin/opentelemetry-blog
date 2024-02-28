@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 logger = logging.getLogger(__name__)
 
 # Opentelemetry
-tracer = trace.get_tracer("diceroller.tracer")
+tracer = trace.get_tracer("date.tracer")
 
 # App
 app = FastAPI()
