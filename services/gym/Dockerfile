@@ -14,4 +14,4 @@ COPY package.json ./
 RUN yarn --prod
 COPY --from=build /app/dist ./
 EXPOSE 8000
-CMD ["node", "index.js"]
+CMD ["node", "--require", "@opentelemetry/auto-instrumentations-node/register", "index.js"]

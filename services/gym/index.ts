@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import { createLogger, format, transports } from 'winston'
 import axios from 'axios'
+import { trace } from '@opentelemetry/api'
 
 // Logger
 const { combine, timestamp, json } = format
@@ -15,6 +16,9 @@ const logger = createLogger({
     new transports.Console()
   ]
 })
+
+// OpenTelemetry
+const tracer = trace.getTracer('gym.tracer')
 
 // App
 const app = express()
@@ -35,18 +39,21 @@ app.get('/health', (req, res) => {
 })
 
 app.get('/gym', async (req, res) => {
+  const span = tracer.startSpan('gym');
   try {
     const dateResponse: any = await axios.get(
       `http://${process.env.DATE_SERVICE_HOSTNAME}:${process.env.DATE_SERVICE_PORT}/date`
     )
     logger.info("Able to get the date from date service")
     if (dateResponse.data.date === 5 || dateResponse.data.date === 6) {
+      span.setAttribute("gym.shouldGo", false)
       res.send({
         status: "success",
         message: "Day off! No need to go to the gym today..."
       })
       return
     } else {
+      span.setAttribute("gym.shouldGo", true)
       res.send({
         status: "success",
         message: "Let's work out! You need to go to the gym today..."
@@ -61,12 +68,7 @@ app.get('/gym', async (req, res) => {
       message: "Something went wrong... Try again later."
     })
     return
+  } finally {
+    span.end()
   }
 })
-
-
-
-
-
-
-
