@@ -7,6 +7,11 @@ services:
       context: ./services/date
     networks:
       - observability
+    environment:
+      OTEL_SERVICE_NAME: date-service
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
     ports:
       - 3000:3000
     logging:

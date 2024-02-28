@@ -19,10 +19,10 @@ pipenv shell
 
 3) Install dependencies
 ```shell
-pipenv install -r requirements.txt
+pipenv install
 ```
 
 4) Run locally
 ```shell
-uvicorn main:app --reload
+pipenv run uvicorn main:app --reload
 ```
