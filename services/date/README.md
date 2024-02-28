@@ -19,10 +19,10 @@ pipenv shell
 
 3) Install dependencies
 ```shell
-pipenv install -r requirements.txt
+pipenv install
 ```
 
 4) Run locally
 ```shell
-uvicorn main:app --reload
+pipenv run opentelemetry-instrument uvicorn main:app --reload --port 3000
 ```

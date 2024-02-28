@@ -8,6 +8,21 @@ fastapi = "==0.110.0"
 q = "*"
 requests = "==2.31.0"
 uvicorn = {extras = ["standard"], version = "==0.27.1"}
+opentelemetry-distro = "==0.44b0"
+opentelemetry-exporter-otlp = "==1.23.0"
+opentelemetry-instrumentation-asyncio = "==0.44b0"
+opentelemetry-instrumentation-aws-lambda = "==0.44b0"
+opentelemetry-instrumentation-dbapi = "==0.44b0"
+opentelemetry-instrumentation-logging = "==0.44b0"
+opentelemetry-instrumentation-sqlite3 = "==0.44b0"
+opentelemetry-instrumentation-urllib = "==0.44b0"
+opentelemetry-instrumentation-wsgi = "==0.44b0"
+opentelemetry-instrumentation-asgi = "==0.44b0"
+opentelemetry-instrumentation-fastapi = "==0.44b0"
+opentelemetry-instrumentation-grpc = "==0.44b0"
+opentelemetry-instrumentation-requests = "==0.44b0"
+opentelemetry-instrumentation-tortoiseorm = "==0.44b0"
+opentelemetry-instrumentation-urllib3 = "==0.44b0"
 
 [dev-packages]
 
