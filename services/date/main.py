@@ -23,7 +23,7 @@ def read_root():
 
 
 @app.get("/date")
-def read_item():
+def get_date():
     try:
         day = datetime.today().weekday()
         logger.info(f"Successfully able to get current day ({day})")
