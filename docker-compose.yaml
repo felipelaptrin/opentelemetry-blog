@@ -93,6 +93,15 @@ services:
       - ./config/tempo.yaml:/etc/tempo/config.yaml
     command: -config.file=/etc/tempo/config.yaml
 
+  otel-collector:
+    image: otel/opentelemetry-collector:0.95.0
+    container_name: otel-collector
+    command: [ "--config=/etc/otel-collector.yaml" ]
+    networks:
+      - observability
+    volumes:
+      - ./config/otel-collector.yaml:/etc/otel-collector.yaml
+
 networks:
   observability:
     name: observability
