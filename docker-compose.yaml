@@ -9,8 +9,6 @@ services:
       - observability
     ports:
       - 3000:3000
-    environment:
-      DATE_SERVICE_HOSTNAME: date-service
     logging:
       driver: fluentd
       options:
