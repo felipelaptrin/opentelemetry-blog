@@ -29,6 +29,10 @@ services:
     environment:
       DATE_SERVICE_HOSTNAME: date-service
       DATE_SERVICE_PORT: 3000
+      OTEL_SERVICE_NAME: gym-service
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
     ports:
       - 8000:8000
     logging:
