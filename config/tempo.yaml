@@ -1,0 +1,29 @@
+stream_over_http_enabled: true
+
+# https://grafana.com/docs/tempo/latest/configuration/#server
+server:
+  http_listen_port: 3200
+  log_level: info
+
+# https://grafana.com/docs/tempo/latest/configuration/#query-frontend
+query_frontend:
+  search:
+    duration_slo: 5s
+  trace_by_id:
+    duration_slo: 5s
+
+# https://grafana.com/docs/tempo/latest/configuration/#distributor
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        http:
+
+# https://grafana.com/docs/tempo/latest/configuration/#storage
+storage:
+  trace:
+    backend: local
+    wal:
+      path: /tmp/tempo/wal             # where to store the the wal locally
+    local:
+      path: /tmp/tempo/blocks
