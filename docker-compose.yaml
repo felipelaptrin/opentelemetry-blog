@@ -111,6 +111,20 @@ services:
     volumes:
       - ./config/otel-collector.yaml:/etc/otel-collector.yaml
 
+  prometheus:
+    image: prom/prometheus:v2.50.0
+    container_name: prometheus
+    networks:
+      - observability
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/config.yaml
+    command: [
+      "--config.file=/etc/prometheus/config.yaml",
+      "--enable-feature=otlp-write-receiver"
+      ]
+
 networks:
   observability:
     name: observability
