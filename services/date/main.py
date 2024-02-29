@@ -33,9 +33,7 @@ def healthcheck():
 
 @app.get("/date")
 def get_date():
-    date_counter.add(1, {
-        "instance": "test"
-    })
+    date_counter.add(1)
     with tracer.start_as_current_span("date") as span:
         try:
             day = datetime.today().weekday()
