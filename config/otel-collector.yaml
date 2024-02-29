@@ -9,13 +9,18 @@ receivers:
 
 # https://opentelemetry.io/docs/collector/configuration/#exporters
 exporters:
-  otlphttp:
+  otlphttp/tempo:
     endpoint: http://tempo:4318
 
+  otlphttp/prometheus:
+    endpoint: http://prometheus:9090/api/v1/otlp
 
 # https://opentelemetry.io/docs/collector/configuration/#pipelines
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [otlphttp]
+      exporters: [otlphttp/tempo]
+    metrics:
+      receivers: [otlp]
+      exporters: [otlphttp/prometheus]
