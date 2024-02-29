@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 
 from fastapi import FastAPI, HTTPException
-from opentelemetry import trace
+from opentelemetry import metrics, trace
 
 # Logger
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -10,6 +10,12 @@ logger = logging.getLogger(__name__)
 
 # Opentelemetry
 tracer = trace.get_tracer("date.tracer")
+meter = metrics.get_meter("date.meter")
+
+date_counter = meter.create_counter(
+    "requests_counter_get_date",
+    description="Counts the number of requests that the /date endpoint received"
+)
 
 # App
 app = FastAPI()
@@ -27,6 +33,9 @@ def healthcheck():
 
 @app.get("/date")
 def get_date():
+    date_counter.add(1, {
+        "instance": "test"
+    })
     with tracer.start_as_current_span("date") as span:
         try:
             day = datetime.today().weekday()
