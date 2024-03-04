@@ -1,0 +1,1 @@
+You can check the documentation of this project in my [blog](https://www.felipetrindade.com/opentelemetry-hands-on/)!
