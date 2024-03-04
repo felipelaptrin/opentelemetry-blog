@@ -3,8 +3,15 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import { createLogger, format, transports } from 'winston'
 import axios from 'axios'
-import { trace } from '@opentelemetry/api'
-
+import { trace, metrics } from '@opentelemetry/api'
+import {
+  MeterProvider,
+  PeriodicExportingMetricReader
+} from '@opentelemetry/sdk-metrics'
+import { Resource } from '@opentelemetry/resources'
+import opentelemetry from '@opentelemetry/api'
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 // Logger
 const { combine, timestamp, json } = format
 const logger = createLogger({
@@ -18,7 +25,25 @@ const logger = createLogger({
 })
 
 // OpenTelemetry
+const myServiceMeterProvider = new MeterProvider({
+  resource: Resource.default().merge(
+    new Resource({
+      [SemanticResourceAttributes.SERVICE_NAME]: process.env.OTEL_SERVICE_NAME
+    })
+  ),
+  readers: [new PeriodicExportingMetricReader({
+    exporter: new OTLPMetricExporter(),
+  })],
+})
+
+// Set this MeterProvider to be global to the app being instrumented.
+opentelemetry.metrics.setGlobalMeterProvider(myServiceMeterProvider)
+
 const tracer = trace.getTracer('gym.tracer')
+const meter = metrics.getMeter('gym.meter')
+const gymCounter = meter.createCounter("requests_counter_get_gym", {
+  description: "Counts the number of requests that the /gym endpoint received"
+})
 
 // App
 const app = express()
@@ -39,7 +64,8 @@ app.get('/health', (req, res) => {
 })
 
 app.get('/gym', async (req, res) => {
-  const span = tracer.startSpan('gym');
+  const span = tracer.startSpan('gym')
+  gymCounter.add(1)
   try {
     const dateResponse: any = await axios.get(
       `http://${process.env.DATE_SERVICE_HOSTNAME}:${process.env.DATE_SERVICE_PORT}/date`
